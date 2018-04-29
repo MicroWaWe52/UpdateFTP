@@ -77,6 +77,7 @@ namespace UpdateFTP
             byte[] buffer = new byte[imgStream.Length];
             imgStream.Read(buffer, 0, buffer.Length);
             imgStream.Close();
+            imgStream.Dispose();
             Stream requestStream = request.GetRequestStream();
             requestStream.Write(buffer, 0, buffer.Length);
             requestStream.Close();

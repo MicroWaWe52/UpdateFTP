@@ -123,6 +123,7 @@ namespace UpdateFTP
                         eviii.EventiTeatroDelSegno.Insert(iM, evm);
                         XmlSerializer xmlsmp = new XmlSerializer(typeof(Eventii));
                         eviii.EventiTeatroDelSegno.Sort((x, y) => DateTime.Compare(x.dataEvento, y.dataEvento));
+                        eviii.EventiTeatroDelSegno.Reverse();
                         using (FileStream fs = new FileStream("eventi.xml", FileMode.Create))
                         {
                             xmlsmp.Serialize(fs, eviii);
@@ -139,13 +140,13 @@ namespace UpdateFTP
                         var s = new StreamWriter("Evento.xml");
                         xmls.Serialize(s, ev);
                         s.Close();
-                        // ev.carica(ev.imgPath);
                         File.Delete("Evento.xml");
                         MessageBox.Show("Caricamento Effetuato");
                         eviii.EventiTeatroDelSegno.Capacity += 1;
                         eviii.EventiTeatroDelSegno.Add(ev);
                         var xmlsp = new XmlSerializer(typeof(Eventii));
                         eviii.EventiTeatroDelSegno.Sort((x, y) => DateTime.Compare(x.dataEvento, y.dataEvento));
+                        eviii.EventiTeatroDelSegno.Reverse();
                         using (FileStream fs = new FileStream("eventi.xml", FileMode.Create))
                         {
                             xmlsp.Serialize(fs, eviii);

@@ -44,7 +44,7 @@ namespace UpdateFTP
             eviii.EventiTeatroDelSegno = new List<EventoSingolo>(1);
             grab();
             Controls.Add(dataGridView1);
-            var evTemp = EventoSingolo.XMLFTP();
+            var evTemp = Eventii.XMLFTP();
             if (evTemp != null)
             {
                 eviii = evTemp;
@@ -122,7 +122,7 @@ namespace UpdateFTP
                         eviii.EventiTeatroDelSegno.RemoveAt(iM);
                         eviii.EventiTeatroDelSegno.Insert(iM, evm);
                         XmlSerializer xmlsmp = new XmlSerializer(typeof(Eventii));
-
+                        eviii.EventiTeatroDelSegno.Sort((x, y) => DateTime.Compare(x.dataEvento, y.dataEvento));
                         using (FileStream fs = new FileStream("eventi.xml", FileMode.Create))
                         {
                             xmlsmp.Serialize(fs, eviii);
@@ -145,6 +145,7 @@ namespace UpdateFTP
                         eviii.EventiTeatroDelSegno.Capacity += 1;
                         eviii.EventiTeatroDelSegno.Add(ev);
                         var xmlsp = new XmlSerializer(typeof(Eventii));
+                        eviii.EventiTeatroDelSegno.Sort((x, y) => DateTime.Compare(x.dataEvento, y.dataEvento));
                         using (FileStream fs = new FileStream("eventi.xml", FileMode.Create))
                         {
                             xmlsp.Serialize(fs, eviii);

@@ -45,30 +45,31 @@ namespace UpdateFTP
 
         public void carica(string ip)
         {
-            ImmagineFTP(ip);
+            ImmagineFtp(ip);
             DataFtp();
 
         }
         public void DataFtp()
         {
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://www.teatrotse.com/teatrotse.com/Evento/Evento.xml");
+            var request = (FtpWebRequest)WebRequest.Create("ftp://www.teatrotse.com/teatrotse.com/Evento/Evento.xml");
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.Credentials = new NetworkCredential("3835532@aruba.it", "Teatro09127");
             //Caricamento Date          	   
             var dateStream = new StreamReader("Eventi.xml");
-            byte[] dateftp = Encoding.UTF8.GetBytes(dateStream.ReadToEnd());
+            var dateftp = Encoding.UTF8.GetBytes(dateStream.ReadToEnd());
             dateStream.Close();
             request.ContentLength = dateftp.Length;
-            Stream requestStream = request.GetRequestStream();
+            var requestStream = request.GetRequestStream();
             requestStream.Write(dateftp, 0, dateftp.Length);
             requestStream.Close();
         }
 
-        public void ImmagineFTP(string iP)
+
+        public void ImmagineFtp(string iP)
         {
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://www.teatrotse.com/teatrotse.com/Evento/" + imgPath);
+            var request = (FtpWebRequest)WebRequest.Create("ftp://www.teatrotse.com/teatrotse.com/Evento/" + imgPath);
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.Credentials = new NetworkCredential("3835532@aruba.it", "Teatro09127");
             //Caricamento Date      
@@ -77,8 +78,9 @@ namespace UpdateFTP
             byte[] buffer = new byte[imgStream.Length];
             imgStream.Read(buffer, 0, buffer.Length);
             imgStream.Close();
+
             imgStream.Dispose();
-            Stream requestStream = request.GetRequestStream();
+            var requestStream = request.GetRequestStream();
             requestStream.Write(buffer, 0, buffer.Length);
             requestStream.Close();
             requestStream.Dispose();
@@ -88,12 +90,12 @@ namespace UpdateFTP
        
        public static void GetImg(string imgName)
         {
-            FileStream outputStream = new FileStream(imgName, FileMode.Create);
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create($"ftp://www.teatrotse.com/teatrotse.com/Evento/{imgName}");
+            var outputStream = new FileStream(imgName, FileMode.Create);
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://www.teatrotse.com/teatrotse.com/Evento/{imgName}");
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.Credentials = new NetworkCredential("3835532@aruba.it", "Teatro09127");
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-            Stream responseStream = response.GetResponseStream();
+            var response = (FtpWebResponse)request.GetResponse();
+            var responseStream = response.GetResponseStream();
 
             const int bufferSize = 102400;
             var buffer = new byte[bufferSize];
@@ -114,13 +116,3 @@ namespace UpdateFTP
 
 
 }
-
-
-
-
-
-
-
-
-
-

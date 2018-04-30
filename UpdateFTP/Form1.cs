@@ -86,7 +86,7 @@ namespace UpdateFTP
                 eviii = (Eventii)x.Deserialize(fs);
                 dataGridView1.DataSource = ds.Tables[1];
             }
-            catch (Exception e)
+            catch (Exception)
             { }
             finally
             {
@@ -129,7 +129,7 @@ namespace UpdateFTP
                             xmlsmp.Serialize(fs, eviii);
                             fs.Close();
                         }
-                        ordinaCamb();
+                        OrdinaCamb();
                         dataGridView1.DataSource = ds.Tables[0];
                         ricarica();
                     }
@@ -140,6 +140,7 @@ namespace UpdateFTP
                         var s = new StreamWriter("Evento.xml");
                         xmls.Serialize(s, ev);
                         s.Close();
+                        // ev.carica(ev.imgPath);
                         File.Delete("Evento.xml");
                         MessageBox.Show("Caricamento Effetuato");
                         eviii.EventiTeatroDelSegno.Capacity += 1;
@@ -151,7 +152,7 @@ namespace UpdateFTP
                         {
                             xmlsp.Serialize(fs, eviii);
                         }
-                        ordinaCamb();
+                        OrdinaCamb();
                         ricarica();
                         dataGridView1.DataSource = ds.Tables[0];
                     }
@@ -168,22 +169,16 @@ namespace UpdateFTP
 
             if (ofd.ShowDialog() != DialogResult.No)
             {
-
-
                 try
                 {
                     File.Copy(ofd.FileName, ofd.SafeFileName, true);
                     imgP = ofd.SafeFileName;
-
-
                     if (imgP.Length >= 15)
                     {
-
                         labelNameImage.Text = imgP.Substring(0, 15);
                     }
                     else
                     {
-
                         labelNameImage.Text = ofd.SafeFileName;
                     }
                 }
@@ -225,7 +220,7 @@ namespace UpdateFTP
                 xmlsp.Serialize(fs, eviii);
                 fs.Close();
             }
-            ordinaCamb();
+            OrdinaCamb();
             var cmlr = XmlReader.Create("eventi.xml", new XmlReaderSettings());
             dataGridView1.DataSource = ds.Tables[0];
             ricarica();
@@ -238,13 +233,13 @@ namespace UpdateFTP
         private void buttonPushFtp_Click(object sender, EventArgs e)
         {
             EventoSingolo evee = new EventoSingolo();
-            progressBarOnInternet.Value = 20;
+            var inc = eviii.EventiTeatroDelSegno.Count / 100;
             foreach (var element in eviii.EventiTeatroDelSegno)
             {
+                progressBarOnInternet.Value += inc;
                 string img = element.imgPath;
-                element.ImmagineFTP(img);
+                element.ImmagineFtp(img);
             }
-            progressBarOnInternet.Value = 50;
             evee.DataFtp();
             progressBarOnInternet.Value = 100;
             MessageBox.Show("Caricamento effetuato");
@@ -267,7 +262,8 @@ namespace UpdateFTP
             toolTip224.Show(toolTip224.GetToolTip(pictureBox1), pictureBox1, durationMilliseconds);
 
         }
-        void ordinaCamb()
+
+        private void OrdinaCamb()
         {
             eviii.EventiTeatroDelSegno.Sort((x, y) => DateTime.Compare(x.dataCambio, y.dataCambio));
 
@@ -349,11 +345,13 @@ namespace UpdateFTP
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
         {
-            foreach (var element in eviii.EventiTeatroDelSegno)
+            foreach (var eventi in eviii.EventiTeatroDelSegno)
             {
-                string img = element.imgPath;
+                var img = eventi.imgPath;
                 File.Delete(img);
             }
+            File.Delete("eventi.xml");
+            File.Delete("eventitemp.xml");
         }
     }
 }

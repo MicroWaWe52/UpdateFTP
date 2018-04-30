@@ -86,7 +86,7 @@ namespace UpdateFTP
                 eviii = (Eventii)x.Deserialize(fs);
                 dataGridView1.DataSource = ds.Tables[1];
             }
-            catch (Exception e)
+            catch (Exception)
             { }
             finally
             {
@@ -238,13 +238,13 @@ namespace UpdateFTP
         private void buttonPushFtp_Click(object sender, EventArgs e)
         {
             EventoSingolo evee = new EventoSingolo();
-            progressBarOnInternet.Value = 20;
+            var inc = eviii.EventiTeatroDelSegno.Count / 100;
             foreach (var element in eviii.EventiTeatroDelSegno)
             {
+                progressBarOnInternet.Value += inc;
                 string img = element.imgPath;
-                element.ImmagineFTP(img);
+                element.ImmagineFtp(img);
             }
-            progressBarOnInternet.Value = 50;
             evee.DataFtp();
             progressBarOnInternet.Value = 100;
             MessageBox.Show("Caricamento effetuato");

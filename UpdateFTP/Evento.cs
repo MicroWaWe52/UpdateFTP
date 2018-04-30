@@ -45,7 +45,7 @@ namespace UpdateFTP
 
         public void carica(string ip)
         {
-            ImmagineFTP(ip);
+            ImmagineFtp(ip);
             DataFtp();
 
         }
@@ -65,7 +65,8 @@ namespace UpdateFTP
             requestStream.Close();
         }
 
-        public void ImmagineFTP(string iP)
+
+        public void ImmagineFtp(string iP)
         {
 
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://www.teatrotse.com/teatrotse.com/Evento/" + imgPath);
@@ -114,13 +115,3 @@ namespace UpdateFTP
 
 
 }
-
-
-
-
-
-
-
-
-
-
